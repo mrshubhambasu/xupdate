@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/mrshubhambasu/xupdate/diff"
+	"github.com/mrshubhambasu/xupdate/differentiator"
 )
 
 func main() {
@@ -20,9 +20,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	//initialize new update integrator
+	d := differentiator.New()
+	patch, err := d.Differentiate(oldfile, newfile)
 	// generate a BSDIFF4 patch
-	patch, err := diff.Bytes(oldfile, newfile)
+	// patch, err := diff.Bytes(oldfile, newfile)
 	if err != nil {
 		panic(err)
 	}

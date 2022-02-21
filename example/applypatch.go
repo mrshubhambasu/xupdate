@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/mrshubhambasu/xupdate/merge"
+	"github.com/mrshubhambasu/xupdate/integrator"
 )
 
 func main() {
@@ -11,7 +11,10 @@ func main() {
 		printUsage(1)
 	}
 
-	err := merge.File(os.Args[1], os.Args[2], os.Args[3])
+	//initialize new update integrator
+	i := integrator.New()
+
+	err := i.Integrate(os.Args[1], os.Args[2], os.Args[3])
 	if err != nil {
 		printUsage(1)
 		panic(err)

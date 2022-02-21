@@ -1,56 +1,29 @@
-package diff
+package differentiator
 
 import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 
 	"github.com/dsnet/compress/bzip2"
 	"github.com/mrshubhambasu/xupdate/util"
 )
 
+type differentiate struct {
+}
+
+type Differentiator interface {
+	Differentiate(oldbs, newbs []byte) ([]byte, error)
+}
+
+func New() Differentiator {
+	return differentiate{}
+}
+
 // Bytes takes the old and new byte slices and outputs the diff
-func Bytes(oldbs, newbs []byte) ([]byte, error) {
+func (d differentiate) Differentiate(oldbs, newbs []byte) ([]byte, error) {
+	fmt.Println("---")
 	return diffb(oldbs, newbs)
-}
-
-// Reader takes the old and new binaries and outputs to a stream of the diff file
-func Reader(oldbin io.Reader, newbin io.Reader, patchf io.Writer) error {
-	oldbs, err := ioutil.ReadAll(oldbin)
-	if err != nil {
-		return err
-	}
-	newbs, err := ioutil.ReadAll(newbin)
-	if err != nil {
-		return err
-	}
-	diffbytes, err := diffb(oldbs, newbs)
-	fmt.Println("diffbytes→", diffbytes)
-	if err != nil {
-		return err
-	}
-	return util.PutWriter(patchf, diffbytes)
-}
-
-// File reads the old and new files to create a diff patch file
-func File(oldfile, newfile, patchfile string) error {
-	oldbs, err := ioutil.ReadFile(oldfile)
-	if err != nil {
-		return fmt.Errorf("could not read oldfile '%v': %v", oldfile, err.Error())
-	}
-	newbs, err := ioutil.ReadFile(newfile)
-	if err != nil {
-		return fmt.Errorf("could not read newfile '%v': %v", newfile, err.Error())
-	}
-	diffbytes, err := diffb(oldbs, newbs)
-	if err != nil {
-		return fmt.Errorf("bsdiff: %v", err.Error())
-	}
-	if err := ioutil.WriteFile(patchfile, diffbytes, 0644); err != nil {
-		return fmt.Errorf("could create patchfile '%v': %v", patchfile, err.Error())
-	}
-	return nil
 }
 
 func diffb(oldbin, newbin []byte) ([]byte, error) {
