@@ -2,7 +2,6 @@ package differentiator
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 
 	"github.com/dsnet/compress/bzip2"
@@ -22,7 +21,6 @@ func New() Differentiator {
 
 // Bytes takes the old and new byte slices and outputs the diff
 func (d differentiate) Differentiate(oldbs, newbs []byte) ([]byte, error) {
-	fmt.Println("---")
 	return diffb(oldbs, newbs)
 }
 
@@ -31,10 +29,8 @@ func diffb(oldbin, newbin []byte) ([]byte, error) {
 		Level: bzip2.BestCompression,
 	}
 	iii := make([]int, len(oldbin)+1)
-	fmt.Println("old→", string(oldbin))
-	qsufsort(iii, oldbin)
 
-	fmt.Println("sorted→", (iii))
+	qsufsort(iii, oldbin)
 
 	//var db
 	var dblen, eblen int
@@ -63,7 +59,7 @@ func diffb(oldbin, newbin []byte) ([]byte, error) {
 	offtout(0, header[8:])
 	offtout(0, header[16:])
 	offtout(newsize, header[24:])
-	// fmt.Println(string(header))
+
 	if _, err := pf.Write(header); err != nil {
 		return nil, err
 	}
@@ -214,7 +210,7 @@ func diffb(oldbin, newbin []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("real diff data", db[:dblen])
+
 	if _, err = pfbz2.Write(db[:dblen]); err != nil {
 		return nil, err
 	}
@@ -269,7 +265,7 @@ func search(iii []int, oldbin []byte, newbin []byte, st, en int, pos *int) int {
 	if bytes.Compare(oldbin[iii[x]:iii[x]+cmpln], newbin[:cmpln]) < 0 {
 		return search(iii, oldbin, newbin, x, en, pos)
 	}
-	fmt.Println("→→→→", search(iii, oldbin, newbin, st, x, pos))
+
 	return search(iii, oldbin, newbin, st, x, pos)
 }
 

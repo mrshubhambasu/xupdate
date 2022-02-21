@@ -5,13 +5,14 @@ import (
 	"testing"
 )
 
-func TestBytes(t *testing.T) {
+func Test_differentiate_Differentiate(t *testing.T) {
 	type args struct {
 		oldbs []byte
 		newbs []byte
 	}
 	tests := []struct {
 		name    string
+		d       differentiate
 		args    args
 		want    []byte
 		wantErr bool
@@ -20,22 +21,15 @@ func TestBytes(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Bytes(tt.args.oldbs, tt.args.newbs)
+			d := differentiate{}
+			got, err := d.Differentiate(tt.args.oldbs, tt.args.newbs)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Bytes() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("differentiate.Differentiate() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Bytes() = %v, want %v", got, tt.want)
+				t.Errorf("differentiate.Differentiate() = %v, want %v", got, tt.want)
 			}
 		})
-	}
-}
-
-func BenchmarkBytes(b *testing.B) {
-	oldfile := []byte("ABCDEF")
-	newfile := []byte("ABCDEFG")
-	for i := 0; i < b.N; i++ {
-		Bytes(oldfile, newfile)
 	}
 }
