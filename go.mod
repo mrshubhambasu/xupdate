@@ -1,4 +1,4 @@
-module xupdate/xupdate
+module github.com/mrshubhambasu/xupdate
 
 go 1.17
 

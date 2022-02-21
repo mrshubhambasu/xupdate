@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 
 	"github.com/dsnet/compress/bzip2"
-	"github.com/mrshubhambasu/xupdate/xupdate/util"
+	"github.com/mrshubhambasu/xupdate/util"
 )
 
 //Bytes applies a patch with the oldfile to create the newfile

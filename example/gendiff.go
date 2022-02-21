@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/mrshubhambasu/xupdate/xupdate/diff"
+	"github.com/mrshubhambasu/xupdate/diff"
 )
 
 func main() {
